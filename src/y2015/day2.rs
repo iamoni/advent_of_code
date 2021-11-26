@@ -32,10 +32,6 @@ impl Elfbox {
     pub fn calculate_paper(&self) -> i32 {
         let shortest_side_area = min(min(self.l * self.w, self.l * self.h), self.w * self.h);
 
-        // print!(
-        //     "Elfbox:\n{:#?}\nshortest side: {}\n",
-        //     &self, shortest_side_area
-        // );
         let total_paper = (2 * self.l * self.w)
             + (2 * self.l * self.h)
             + (2 * self.h * self.w)

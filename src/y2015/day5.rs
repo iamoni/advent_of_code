@@ -3,7 +3,8 @@ use super::read_input;
 pub fn get_result() {
     let input = read_input(5);
 
-    part1(&input)
+    part1(&input);
+    part2(&input);
 }
 
 fn part1(input: &Vec<String>) {
@@ -72,16 +73,28 @@ fn check_bad_strings(line: &str) -> bool {
 }
 
 fn part2(input: &Vec<String>) {
-    //todo
+    let mut count = 0;
+
+    for i in input {
+        if check_pair(i) && check_three(i) == true {
+            count += 1;
+        }
+    }
+
+    println!("part 2 - count: {}", &count);
 }
 
 fn check_pair(line: &str) -> bool {
     let mut count = 0;
 
-    while count < line.len() {
-        let pair = &line[count..count + 1];
+    while count < line.len() - 1 {
+        let pair = &line[count..count + 2];
         if line.matches(pair).count() > 1 {
-            return true;
+            let p1 = line.find(pair).unwrap();
+            let p2 = line.rfind(pair).unwrap();
+            if p2 - p1 > 1 {
+                return true;
+            }
         }
         count += 1;
     }
@@ -91,9 +104,9 @@ fn check_pair(line: &str) -> bool {
 fn check_three(line: &str) -> bool {
     let mut count = 0;
 
-    while count < line.len() - 1 {
-        let pair = &line[count..count + 2];
-        if pair.chars().nth(0) == pair.chars().nth(2) {
+    while count < line.len() - 2 {
+        let pair = &line[count..count + 3];
+        if pair.chars().nth(0).unwrap() == pair.chars().nth(2).unwrap() {
             return true;
         }
         count += 1;
@@ -126,14 +139,16 @@ mod tests {
     #[test]
     fn test_pairs() {
         assert_eq!(check_pair("hf3eurds"), false);
-        // assert_eq!(check_pair("aaa"), false);
+        assert_eq!(check_pair("aaa"), false);
+        assert_eq!(check_pair("aaaa"), true);
         assert_eq!(check_pair("ox3ij4jdjoxneff"), true);
     }
 
     #[test]
     fn test_threes() {
         assert_eq!(check_three("hf3eurds"), false);
-        assert_eq!(check_three("aaaa"), true);
-        // assert_eq!(check_three("oxo283"), true);
+        assert_eq!(check_three("aaa"), true);
+        assert_eq!(check_three("oxo283"), true);
+        assert_eq!(check_three("hjfhd2fdf"), true);
     }
 }
