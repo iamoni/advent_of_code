@@ -2,5 +2,5 @@
 mod y2015;
 
 fn main() {
-    y2015::day5::get_result();
+    y2015::day6::get_result();
 }
